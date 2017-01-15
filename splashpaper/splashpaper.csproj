@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="Controllers\Common.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RandomController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Models\DataSerializer.cs" />
     <Compile Include="Models\Paper.cs" />

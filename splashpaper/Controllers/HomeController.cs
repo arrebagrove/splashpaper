@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using splashpaper.Models;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,33 +12,36 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace splashpaper.Controllers {
     public static class HomeController {
-        public static void GetLast() {
-            
-        }
 
-        public static async Task<Paper> GetRandom() {
-            Paper paper = new Paper();
+        public static ObservableCollection<Paper> NewsPaper { get; set; }
+
+        public static async Task<bool> FillNewsPaper() {
+            NewsPaper = new ObservableCollection<Paper>();
 
             HttpClient http = new HttpClient();
             http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Client-ID", "16246a4d58baa698a0a720106aab4ecedfe241c72205586da6ab9393424894a8");
             HttpResponseMessage response = null;
 
             try {
-                response = await http.GetAsync("https://api.unsplash.com/photos/random");
+                response = await http.GetAsync("https://api.unsplash.com/photos");
                 response.EnsureSuccessStatusCode();
                 string responseBodyAsText = await response.Content.ReadAsStringAsync();
 
-                JObject json = JObject.Parse(responseBodyAsText);
+                JArray jsonList = JArray.Parse(responseBodyAsText);
+                
+                foreach (JObject jsonItem in jsonList) {
+                    Paper paper = new Paper();
+                    paper.Id = (string)jsonItem.GetValue("id");
+                    paper.URLRaw = (string)jsonItem["urls"]["raw"];
+                    paper.Thumbnail = (string)jsonItem["urls"]["regular"];
 
-                paper.id = (string)json.GetValue("id");
-                paper.likes = (int)json.GetValue("likes");
-                paper.urlRaw = (string)json["urls"]["raw"];
-                paper.thumbnail = (string)json["urls"]["thumb"];
+                    NewsPaper.Add(paper);
+                }
 
-                return paper;
+                return true;
             }
             catch (HttpRequestException hre) {
-                return paper;
+                return false;
             }
         }
 

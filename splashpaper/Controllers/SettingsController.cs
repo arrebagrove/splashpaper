@@ -7,6 +7,25 @@ using Windows.ApplicationModel.Background;
 
 namespace splashpaper.Controllers {
     public static class SettingsController {
+        private static string _taskName = "WallUpdaterTask";
+        private static string _taskEntryPoint = "Tasks.WallUpdater";
+
+        public static string GetTaskName() {
+            return _taskName;
+        }
+
+        public static string GetTaskEntryPoint() {
+            return _taskEntryPoint;
+        }
+
+        public static bool IsBackgroundTaskActive() {
+            foreach (var task in BackgroundTaskRegistration.AllTasks) {
+                if (task.Value.Name == GetTaskName()) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public static void RegisterBackgroundTask(string taskName, string entryPoint) {
             foreach (var task in BackgroundTaskRegistration.AllTasks) {
@@ -21,7 +40,7 @@ namespace splashpaper.Controllers {
 
             builder.Name = taskName;
             builder.TaskEntryPoint = entryPoint;
-            builder.SetTrigger(new TimeTrigger(60, false));
+            builder.SetTrigger(new TimeTrigger(15, false));
             BackgroundTaskRegistration taskRegistered = builder.Register();
         }
 

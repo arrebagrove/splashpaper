@@ -7,10 +7,19 @@
       mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ScrollViewer Style="{StaticResource PageScrollViewerStyle}">
-            <StackPanel>
-                <Image x:Name="Paper" Height="300" Width="300"/>
-            </StackPanel>
-        </ScrollViewer>
+        <GridView x:Name="ListNewsPaper">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0" Height="300" Width="300">
+                        <Image Stretch="UniformToFill" Height="300">
+                            <Image.Source>
+                                <BitmapImage DecodePixelWidth="300" UriSource="{Binding Thumbnail}"/>
+                            </Image.Source>
+                        </Image>
+                        <!--<TextBlock Foreground="Black" Text="{Binding Title}" Height="100"/>-->
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
     </Grid>
 </Page>

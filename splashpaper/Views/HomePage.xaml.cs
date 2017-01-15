@@ -16,10 +16,16 @@ namespace splashpaper.Views {
         }
 
         public async void LoadData() {
-            Paper paper = await HomeController.GetRandom();
-            var bitmap = new BitmapImage(new Uri(paper.thumbnail));
-            Paper.Source = bitmap;
+            //Paper paper = await HomeController.GetRandom();
+            //var bitmap = new BitmapImage(new Uri(paper.Thumbnail));
+            //Paper.Source = bitmap;
 
+            bool result = await HomeController.FillNewsPaper();
+            if (result) {
+                ListNewsPaper.ItemsSource = HomeController.NewsPaper;
+            }
+            //List<Paper> papers = await HomeController.GetNewsPaper();
+            //HomeController.NewsPaper = new System.Collections.ObjectModel.ObservableCollection<Models.Paper>();
             //SetWallappaer(paper.urlRaw);
         }
 

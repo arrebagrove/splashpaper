@@ -5,7 +5,7 @@
         private string _urlRaw { get; set; }
         private string _thumbnail { get; set; }
 
-        public string id {
+        public string Id {
             get {
                 return _id;
             }
@@ -16,7 +16,7 @@
             }
         }
 
-        public int likes {
+        public int Likes {
             get {
                 return _likes;
             }
@@ -27,7 +27,7 @@
             }
         }
 
-        public string urlRaw {
+        public string URLRaw {
             get {
                 return _urlRaw;
             }
@@ -38,7 +38,7 @@
             }
         }
 
-        public string thumbnail {
+        public string Thumbnail {
             get {
                 return _thumbnail;
             }

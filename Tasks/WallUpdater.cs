@@ -34,7 +34,7 @@ namespace Tasks {
 
             Paper paper = await GetRandom();
 
-            StorageFile wall = await DownloadImagefromServer(paper.urlRaw, "wall24");
+            StorageFile wall = await DownloadImagefromServer(paper.URLRaw, "wall24");
             //StorageFile wall = await ApplicationData.Current.LocalFolder.GetFileAsync(prevName); ;
 
             //StorageFile lockImage = await TakeScreenshot(wall.Path, newName, null);
@@ -59,10 +59,10 @@ namespace Tasks {
 
                 JObject json = JObject.Parse(responseBodyAsText);
 
-                paper.id = (string)json.GetValue("id");
-                paper.likes = (int)json.GetValue("likes");
-                paper.urlRaw = (string)json["urls"]["raw"];
-                paper.thumbnail = (string)json["urls"]["thumb"];
+                paper.Id = (string)json.GetValue("id");
+                paper.Likes = (int)json.GetValue("likes");
+                paper.URLRaw = (string)json["urls"]["raw"];
+                paper.Thumbnail = (string)json["urls"]["thumb"];
 
                 return paper;
             }

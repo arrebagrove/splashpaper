@@ -18,12 +18,14 @@ using Windows.UI.Xaml.Navigation;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace splashpaper.Views {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SettingsPage : Page {
         public SettingsPage() {
-            this.InitializeComponent();
+            InitializeComponent();
+            LoadData();
+        }
+
+        private void LoadData() {
+            WallSwitch.IsOn = SettingsController.IsBackgroundTaskActive();
         }
 
         /// <summary>
@@ -35,11 +37,11 @@ namespace splashpaper.Views {
             var toggle = (ToggleSwitch)sender;
             if (toggle.IsOn) {
                 SettingsController.RegisterBackgroundTask(
-                    "WallUpdaterTask",
-                    "Tasks.WallUpdater");
+                    SettingsController.GetTaskName(),
+                    SettingsController.GetTaskEntryPoint());
             }
             else {
-                SettingsController.UnregisterBackgroundTask("WallUpdaterTask");
+                SettingsController.UnregisterBackgroundTask(SettingsController.GetTaskName());
             }
         }
 

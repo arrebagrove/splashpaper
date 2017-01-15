@@ -12,7 +12,7 @@
             <PivotItem Header="configuration">
                 <ScrollViewer>
                     <StackPanel Margin="0,0,0,40">
-                        <TextBlock Text="wallpaper"/>
+                        <TextBlock FontWeight="Light" FontSize="34" Typography.Capitals="AllSmallCaps" Text="wallpaper"/>
                         <TextBlock Text="Periodically update wallpaper" 
                                        TextWrapping="Wrap"/>
                         <ToggleSwitch x:Name="WallSwitch"
@@ -27,25 +27,24 @@
                         <RichTextBlock x:Name="FeedbackBox">
                             <Paragraph FontWeight="SemiLight" FontSize="24">feedback</Paragraph>
                             <Paragraph Margin="0,0,0,0">
-                                Envoyez un mail si vous rencontrez des problèmes ou si vous avez des remarques
+                                Send an email if you encounter issues or if you've suggestions
                             </Paragraph>
                         </RichTextBlock>
-                        <Button x:Name="FeedbackButton" Content="envoyer un avis" Margin="0,12,0,40" Click="FeedbackButton_Click"/>
+                        <Button x:Name="FeedbackButton" Content="sand a suggestion" Margin="0,12,0,40" Click="FeedbackButton_Click"/>
 
                         <RichTextBlock x:Name="NoteBox" Margin="0,0,0,0">
                             <Paragraph FontWeight="SemiLight" FontSize="24">notation</Paragraph>
                             <Paragraph>
-                                N'hésitez pas à noter l'app sur le store si l'application vous plaît
+                                Don't forgt to give the app a note on the store ;)
                             </Paragraph>
                         </RichTextBlock>
-                        <Button x:Name="NoteButton" Content="noter l'app" Margin="0,12,0,40" Click="NoteButton_Click"/>
+                        <Button x:Name="NoteButton" Content="give a note" Margin="0,12,0,40" Click="NoteButton_Click"/>
 
                         <RichTextBlock x:Name="ImagesBox" Margin="0,0,0,40">
                             <Paragraph FontWeight="SemiLight" FontSize="24">images</Paragraph>
                             <Paragraph>
-                                Les images proviennent des sources
-                                <Hyperlink NavigateUri="https://unsplash.com/">Unsplash</Hyperlink> et
-                                <Hyperlink NavigateUri="http://apod.nasa.gov/apod/astropix.html">NASA</Hyperlink>
+                                Images sources
+                                <Hyperlink NavigateUri="https://unsplash.com/">Unsplash</Hyperlink>
                             </Paragraph>
                         </RichTextBlock>
                     </StackPanel>
