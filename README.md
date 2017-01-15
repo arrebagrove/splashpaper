@@ -1,7 +1,14 @@
 # splashpaper
 Unsplash wallpaper changer (Universale Windows App)
 
-# todo
+![screenshot](screenshot.png)
+
+
+## features
+
+* periodically change your wallpaper
+
+## todo
 
 * categories
 * search
