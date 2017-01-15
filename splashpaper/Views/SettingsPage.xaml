@@ -1,0 +1,56 @@
+﻿<Page
+    x:Class="splashpaper.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:splashpaper.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot x:Name="PivotSettings">
+            <PivotItem Header="configuration">
+                <ScrollViewer>
+                    <StackPanel Margin="0,0,0,40">
+                        <TextBlock Text="wallpaper"/>
+                        <TextBlock Text="Periodically update wallpaper" 
+                                       TextWrapping="Wrap"/>
+                        <ToggleSwitch x:Name="WallSwitch"
+                                      Toggled="WallSwitch_Toggled"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+
+            <PivotItem Header="about">
+                <ScrollViewer Margin="0,20,0,0">
+                    <StackPanel>
+                        <RichTextBlock x:Name="FeedbackBox">
+                            <Paragraph FontWeight="SemiLight" FontSize="24">feedback</Paragraph>
+                            <Paragraph Margin="0,0,0,0">
+                                Envoyez un mail si vous rencontrez des problèmes ou si vous avez des remarques
+                            </Paragraph>
+                        </RichTextBlock>
+                        <Button x:Name="FeedbackButton" Content="envoyer un avis" Margin="0,12,0,40" Click="FeedbackButton_Click"/>
+
+                        <RichTextBlock x:Name="NoteBox" Margin="0,0,0,0">
+                            <Paragraph FontWeight="SemiLight" FontSize="24">notation</Paragraph>
+                            <Paragraph>
+                                N'hésitez pas à noter l'app sur le store si l'application vous plaît
+                            </Paragraph>
+                        </RichTextBlock>
+                        <Button x:Name="NoteButton" Content="noter l'app" Margin="0,12,0,40" Click="NoteButton_Click"/>
+
+                        <RichTextBlock x:Name="ImagesBox" Margin="0,0,0,40">
+                            <Paragraph FontWeight="SemiLight" FontSize="24">images</Paragraph>
+                            <Paragraph>
+                                Les images proviennent des sources
+                                <Hyperlink NavigateUri="https://unsplash.com/">Unsplash</Hyperlink> et
+                                <Hyperlink NavigateUri="http://apod.nasa.gov/apod/astropix.html">NASA</Hyperlink>
+                            </Paragraph>
+                        </RichTextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>
