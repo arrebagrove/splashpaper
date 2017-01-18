@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Net.Http.Headers;
 
 namespace Tasks {
-    public sealed class WallUpdater : XamlRenderingBackgroundTask {
+    public sealed class WallUpdater : IBackgroundTask {
         BackgroundTaskDeferral _deferral;
         volatile bool _cancelRequested = false;
         private string unsplashURL = "https://unsplash.it/1500?random";
@@ -19,30 +19,66 @@ namespace Tasks {
         private void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason) {
             // Indicate that the background task is canceled.
             _cancelRequested = true;
+
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            ApplicationDataCompositeValue stats = new ApplicationDataCompositeValue();
+            stats["date"] = DateTime.Now;
+            stats["error"] = reason.ToString();
+
+            localSettings.Values["wallerror"] = stats;
         }
 
-        protected override async void OnRun(IBackgroundTaskInstance taskInstance) {
+        async void IBackgroundTask.Run(IBackgroundTaskInstance taskInstance) {
             taskInstance.Canceled += OnCanceled;
             var deferral = taskInstance.GetDeferral();
-            //string appBackgroundName = RetrieveLockscreenBackgroundName();
-            //StorageFile wall = await DownloadImagefromServer(_lockscreenURL, newFilesName);
-            //SaveLockscreenBackground(wall);
-            //var prevName = RetrieveLockscreenBackgroundName();
-            //var newName = GenerateAppBackgroundName(prevName);
-            //var path = RetrieveAppBackgroundPath();
-            //var dailyQuote = RetrieveDailyQuote();
+
+            SaveTime();
 
             Paper paper = await GetRandom();
 
-            StorageFile wall = await DownloadImagefromServer(paper.URLRaw, "wall24");
-            //StorageFile wall = await ApplicationData.Current.LocalFolder.GetFileAsync(prevName); ;
-
-            //StorageFile lockImage = await TakeScreenshot(wall.Path, newName, null);
-            //await SetLockscreenAsync(wall);
-            SetWallpaperAsync(wall);
+            StorageFile wall = await DownloadImagefromServer(paper.URLRegular, paper.Id);
+            ////await SetLockscreenAsync(wall);
+            await SetWallpaperAsync(wall);
             //SaveLockscreenBackgroundName(lockImage.Name);
             //SaveAppBackground(lockImage);
             deferral.Complete();
+        }
+
+        //protected override async void OnRun(IBackgroundTaskInstance taskInstance) {
+        //    taskInstance.Canceled += OnCanceled;
+        //    var deferral = taskInstance.GetDeferral();
+        //    //string appBackgroundName = RetrieveLockscreenBackgroundName();
+        //    //StorageFile wall = await DownloadImagefromServer(_lockscreenURL, newFilesName);
+        //    //SaveLockscreenBackground(wall);
+        //    //var prevName = RetrieveLockscreenBackgroundName();
+        //    //var newName = GenerateAppBackgroundName(prevName);
+        //    //var path = RetrieveAppBackgroundPath();
+        //    //var dailyQuote = RetrieveDailyQuote();
+
+        //    SaveTime();
+
+        //    Paper paper = await GetRandom();
+
+        //    StorageFile wall = await DownloadImagefromServer(paper.URLRaw, paper.Id);
+        //    //await SetLockscreenAsync(wall);
+        //    await SetWallpaperAsync(wall);
+        //    //SaveLockscreenBackgroundName(lockImage.Name);
+        //    //SaveAppBackground(lockImage);
+        //    deferral.Complete();
+        //}
+
+        private void SaveTime() {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            ApplicationDataCompositeValue stats = new ApplicationDataCompositeValue();
+
+            stats["date"] = DateTime.Now.ToString();
+            localSettings.Values["wallstats"] = stats;
+
+            // Empty error
+            ApplicationDataCompositeValue error = new ApplicationDataCompositeValue();
+            stats["date"] = "";
+            stats["error"] = "";
+            localSettings.Values["wallerror"] = error;
         }
 
         private async Task<Paper> GetRandom() {
@@ -62,6 +98,7 @@ namespace Tasks {
                 paper.Id = (string)json.GetValue("id");
                 paper.Likes = (int)json.GetValue("likes");
                 paper.URLRaw = (string)json["urls"]["raw"];
+                paper.URLRegular = (string)json["urls"]["regular"];
                 paper.Thumbnail = (string)json["urls"]["thumb"];
 
                 return paper;

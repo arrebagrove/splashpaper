@@ -27,21 +27,52 @@ namespace splashpaper.Controllers {
             return false;
         }
 
-        public static void RegisterBackgroundTask(string taskName, string entryPoint) {
+        public static async void RegisterBackgroundTask(string taskName, string entryPoint) {
             foreach (var task in BackgroundTaskRegistration.AllTasks) {
                 if (task.Value.Name == taskName) {
                     return;
                 }
             }
 
-            BackgroundExecutionManager.RequestAccessAsync();
+            BackgroundExecutionManager.RemoveAccess();
+            BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
+            if (status == BackgroundAccessStatus.Denied) {
+                return;
+            }
+
+            SystemCondition internetCondition = new SystemCondition(SystemConditionType.InternetAvailable);
 
             var builder = new BackgroundTaskBuilder();
 
             builder.Name = taskName;
             builder.TaskEntryPoint = entryPoint;
-            builder.SetTrigger(new TimeTrigger(15, false));
+            var timeTrigger = new TimeTrigger(16, false);
+            builder.SetTrigger(timeTrigger);
+            //builder.SetTrigger(new SystemTrigger(SystemTriggerType.PowerStateChange, false));
+            builder.AddCondition(internetCondition);
             BackgroundTaskRegistration taskRegistered = builder.Register();
+        }
+
+        public static async void RegisterSingleProcessTask() {
+            string taskName = "SingleTask";
+            foreach (var registeredTask in BackgroundTaskRegistration.AllTasks) {
+                if (registeredTask.Value.Name == taskName) {
+                    return;
+                }
+            }
+
+            BackgroundAccessStatus status = await BackgroundExecutionManager.RequestAccessAsync();
+            if (status == BackgroundAccessStatus.Denied) {
+                return;
+            }
+
+            var builder = new BackgroundTaskBuilder();
+            builder.Name = "SingleTaskTrigger";
+            builder.SetTrigger(new TimeTrigger(15, true));
+
+            // use builder.TaskEntryPoint if you want to not use the default OnBackgroundActivated
+            // we’ll register it and now will start work based on the trigger, here we used a Time Trigger
+            BackgroundTaskRegistration task = builder.Register();
         }
 
         public static void UnregisterBackgroundTask(string taskName) {

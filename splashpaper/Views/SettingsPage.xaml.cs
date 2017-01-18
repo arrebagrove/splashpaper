@@ -1,19 +1,9 @@
 ﻿using splashpaper.Controllers;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Email;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,6 +16,34 @@ namespace splashpaper.Views {
 
         private void LoadData() {
             WallSwitch.IsOn = SettingsController.IsBackgroundTaskActive();
+            GetLastUpdatedTask();
+            GetLastError();
+        }
+
+        private void GetLastUpdatedTask() {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.ContainsKey("wallstats")) {
+                ApplicationDataCompositeValue stats = (ApplicationDataCompositeValue)localSettings.Values["wallstats"];
+
+                if (stats["date"] == null) {
+                    return;
+                }
+
+                LastUpdatedTask.Text = "Task last run on: " + stats["date"];
+            }            
+        }
+
+        private void GetLastError() {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.ContainsKey("wallerror")) {
+                ApplicationDataCompositeValue stats = (ApplicationDataCompositeValue)localSettings.Values["wallerror"];
+
+                if (stats["date"] == null) {
+                    return;
+                }
+
+                LastError.Text = "Last error on: " + stats["date"] + " " + " - due to: " + stats["error"];
+            }
         }
 
         /// <summary>

@@ -19,9 +19,15 @@ namespace splashpaper {
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
+
+        // Since we didn’t use TaskEntryPoint, this is the default constructor used
+        //protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args) {
+        //    base.OnBackgroundActivated(args);
+        //    DoBackgroundWork(args.TaskInstance);
+        //}
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

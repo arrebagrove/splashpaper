@@ -17,6 +17,9 @@
                                        TextWrapping="Wrap"/>
                         <ToggleSwitch x:Name="WallSwitch"
                                       Toggled="WallSwitch_Toggled"/>
+
+                        <TextBlock x:Name="LastUpdatedTask" Text="Never run"/>
+                        <TextBlock x:Name="LastError" Text="No error"/>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
@@ -30,7 +33,7 @@
                                 Send an email if you encounter issues or if you've suggestions
                             </Paragraph>
                         </RichTextBlock>
-                        <Button x:Name="FeedbackButton" Content="sand a suggestion" Margin="0,12,0,40" Click="FeedbackButton_Click"/>
+                        <Button x:Name="FeedbackButton" Content="send a suggestion" Margin="0,12,0,40" Click="FeedbackButton_Click"/>
 
                         <RichTextBlock x:Name="NoteBox" Margin="0,0,0,0">
                             <Paragraph FontWeight="SemiLight" FontSize="24">notation</Paragraph>

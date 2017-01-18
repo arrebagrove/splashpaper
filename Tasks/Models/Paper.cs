@@ -3,6 +3,7 @@
         private string _id { get; set; }
         private int _likes { get; set; }
         private string _urlRaw { get; set; }
+        private string _urlRegular { get; set; }
         private string _thumbnail { get; set; }
 
         public string Id {
@@ -48,5 +49,18 @@
                 }
             }
         }
+
+        public string URLRegular {
+            get {
+                return _urlRegular;
+            }
+
+            set {
+                if (_urlRegular != value) {
+                    _urlRegular = value;
+                }
+            }
+        }
+
     }
 }
